@@ -43,5 +43,26 @@ def PacketHandler(pkt):
             check_devices.add(dot11_layer.addr2)
             sensors_dbm.append(get_sensor(devices[dot11_layer.addr2], {"dBm Signal" : pkt[RadioTap].dBm_AntSignal}))
         
+        ## main function
+def main():
+    threading.Timer(SENT_INTERNAL, main).start()
+    sniff(iface = "mon0", prn = PacketHandler, timout = SENT_INTERNAL)
+    device = [{
+        'id': DEVICE_FRIENDLY_NAME,
+        'sensors': sensors_dbm
+    }]
+    connection = http.client.HTTPSConnection(UBEAC_URL)
+    connection.request('POST', GATEWAY_URL, json.dumps(device))
+    response = connection.getresponse()
+    print(response.read().decode())
+    sensors_dbm.clear()
+    check_devices.clear()
+    
+    if __name__ == '__main__':
+    main()
+    
+    
+    
+        
         
         
