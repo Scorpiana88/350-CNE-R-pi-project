@@ -11,3 +11,27 @@ import json
 import threading
 import http.client
 
+
+# gateway and variables
+UBEAC_URL = 'hub.ubeac.io'
+GATEWAY_URL = 'http://####'
+DEVICE_FRIENDLY_NAME = 'Rpi detector 4'
+SENT_INTERNAL = 10 # Sent data interval in second
+
+
+## for tracking your own devices, add them to this dictionary
+devices = {"00:00:00:00:00:00" : "DEVICE 1",
+           "00:00:00:00:00:00" : "DEVICE 2",
+           "00:00:00:00:00:00" : "DEVICE 3",}
+
+
+## function puts data into uBeac sensor format
+def get_sensor(id, value, type=None, unit=None, prefix=None, dt=None):
+    sensor = {
+        'id': id
+        'data': value
+    }
+    return sensor
+  
+  
+  
