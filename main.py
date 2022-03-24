@@ -35,3 +35,13 @@ def get_sensor(id, value, type=None, unit=None, prefix=None, dt=None):
   
   
   
+## function tracks WIFI packets emitted from wireless devices
+def PacketHandler(pkt):
+    if pkt.haslayer(Dot11):
+        dot11_layer = pkt.getlayer(Dot11)
+        if dot11_layer.addr2 and (dot11_layer.addr2 in devices) and (dot11_layer.addr2 not in check_devices):
+            check_devices.add(dot11_layer.addr2)
+            sensors_dbm.append(get_sensor(devices[dot11_layer.addr2], {"dBm Signal" : pkt[RadioTap].dBm_AntSignal}))
+        
+        
+        
